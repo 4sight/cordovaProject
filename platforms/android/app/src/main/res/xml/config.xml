@@ -16,7 +16,6 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <access origin="http://api.openweathermap.org/*" subdomains="true" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
