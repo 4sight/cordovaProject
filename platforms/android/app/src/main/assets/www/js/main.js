@@ -54,22 +54,37 @@ function currentWeather() {
      navigator.geolocation.getCurrentPosition(function(position) {
         var x = position.coords.latitude;
         var y = position.coords.longitude;
-        fetch("http://api.openweathermap.org/data/2.5/weather?lat="+x+"&lon="+y+"&units=imperial&APPID=e9b433f7ed306860db69ea25723a5f48").then(function(response) {
-          if (response.status !== 200) {
-            alert('Error: ' + response.status);
-          return;
-          }
-          response.json().then(function(data) {
+        fetch("https://api.openweathermap.org/data/2.5/weather?lat="+x+"&lon="+y+"&units=imperial&APPID=e9b433f7ed306860db69ea25723a5f48").then(function(response) {
+          if (!response.ok) {
+            return response.json();
+          } else { 
+            return response.json().then(function(data) {
           var city = data.name;
           var temp = Math.round(data.main.temp);
           var weather = data.weather[0].description;
-          var image = "<img src='http://openweathermap.org/img/w/" + data.weather[0].icon + ".png'>";
-          $("#displayBox").html(city+"<br><br>"+temp+"<br><br>"+weather+"<br>"+image);
-      });
-    }
-  )
-  .catch(function(err) {
+          var image = "<img src='https://openweathermap.org/img/w/" + data.weather[0].icon + ".png'>";
+          alert('Temperature: ' + temp + '\n' + 
+                'Weather: ' + weather);
+      }).catch(function(err) {
     alert('Fetch Error!', err);
     }
-  )})
-}};
+  )
+ 
+    }
+  })
+})}};
+
+function readFile(fileEntry) {
+
+    fileEntry.file(function (file) {
+        var reader = new FileReader();
+
+        reader.onloadend = function() {
+            console.log("Successful file read: " + this.result);
+            displayFileData(fileEntry.fullPath + ": " + this.result);
+        };
+
+        reader.readAsText(file);
+
+    }, onErrorReadFile);
+}

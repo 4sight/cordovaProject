@@ -12,6 +12,9 @@
     },
     "cordova-plugin-geolocation": {
       "PACKAGE_NAME": "io.cordova.greeleycordova"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "io.cordova.greeleycordova"
     }
   },
   "dependent_plugins": {}

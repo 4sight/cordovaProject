@@ -1,3 +1,23 @@
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import XYZ from 'ol/source/XYZ';
+
+new Map({
+  target: 'map',
+  layers: [
+    new TileLayer({
+      source: new XYZ({
+        url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      })
+    })
+  ],
+  view: new View({
+    center: [0, 0],
+    zoom: 2
+  })
+});
+
 document.getElementById("getPosition").addEventListener("click", getPosition);
 document.getElementById("watchPosition").addEventListener("click", watchPosition);
 document.getElementById("currentWeather").addEventListener("click", currentWeather);
@@ -54,22 +74,31 @@ function currentWeather() {
      navigator.geolocation.getCurrentPosition(function(position) {
         var x = position.coords.latitude;
         var y = position.coords.longitude;
-        fetch("http://api.openweathermap.org/data/2.5/weather?lat="+x+"&lon="+y+"&units=imperial&APPID=e9b433f7ed306860db69ea25723a5f48").then(function(response) {
-          if (response.status !== 200) {
-            alert('Error: ' + response.status);
-          return;
-          }
-          response.json().then(function(data) {
+        fetch("https://api.openweathermap.org/data/2.5/weather?lat="+x+"&lon="+y+"&units=imperial&APPID=e9b433f7ed306860db69ea25723a5f48").then(function(response) {
+          if (!response.ok) {
+            return response.json();
+          } else { 
+            return response.json().then(function(data) {
           var city = data.name;
           var temp = Math.round(data.main.temp);
           var weather = data.weather[0].description;
-          var image = "<img src='http://openweathermap.org/img/w/" + data.weather[0].icon + ".png'>";
-          $("#displayBox").html(city+"<br><br>"+temp+"<br><br>"+weather+"<br>"+image);
-      });
-    }
-  )
-  .catch(function(err) {
+          var image = "<img src='https://openweathermap.org/img/w/" + data.weather[0].icon + ".png'>";
+          alert('Temperature: ' + temp + '\n' + 
+                'Weather: ' + weather);
+      }).catch(function(err) {
     alert('Fetch Error!', err);
     }
-  )})
-}};
+  )
+ 
+    }
+  })
+})}};
+
+// const selectedFile = document.getElementById('input').files[0];
+document.getElementById('input').addEventListener('change', function(){
+  var reader = new FileReader();
+  reader.onload = function(){
+    document.getElementById('displayBox').textContent = this.result;
+  };
+  reader.readAsText(this.files[0]);
+});
