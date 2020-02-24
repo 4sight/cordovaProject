@@ -1,16 +1,3 @@
-const map = new ol.Map({
-  target: 'map',
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
-    })
-  ],
-  view: new ol.View({
-    center: [0, 0],
-    zoom: 0
-  })
-});
-
 document.getElementById("getPosition").addEventListener("click", getPosition);
 document.getElementById("watchPosition").addEventListener("click", watchPosition);
 document.getElementById("currentWeather").addEventListener("click", currentWeather);
@@ -103,6 +90,16 @@ var view = new ol.View({
   zoom: 2
 });
 
+var map = new ol.Map({
+  layers: [
+    new ol.layer.Tile({
+      source: new ol.source.OSM()
+    })
+  ],
+  target: 'map',
+  view: view
+});
+
 var geolocation = new ol.Geolocation({
   // enableHighAccuracy must be set to true to have the heading value.
   trackingOptions: {
@@ -157,7 +154,7 @@ positionFeature.setStyle(new ol.style.Style({
 geolocation.on('change:position', function() {
   var coordinates = geolocation.getPosition();
   positionFeature.setGeometry(coordinates ?
-    new Point(coordinates) : null);
+    new ol.geom.Point(coordinates) : null);
 });
 
 new ol.source.Vector({
