@@ -36,22 +36,45 @@
     </head>
     <body>
         <div class="app">
-            <h1>Apache Cordova</h1>
+            <h1>Apache Cordova dq</h1>
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received">Device is Ready</p>
             </div>
-            <div id = 'map' class = 'map'></div>
+            <div id='map' class='map'></div>
+            <label for="track">
+              track position
+              <input id="track" type="checkbox"/>
+            </label>
+            <p>
+              position accuracy : <code id="accuracy"></code>&nbsp;&nbsp;
+              altitude : <code id="altitude"></code>&nbsp;&nbsp;
+              altitude accuracy : <code id="altitudeAccuracy"></code>&nbsp;&nbsp;
+              heading : <code id="heading"></code>&nbsp;&nbsp;
+              speed : <code id="speed"></code>
+            </p>
             <button id = "getPosition">CURRENT POSITION</button>
             <button id = "watchPosition">WATCH POSITION</button>
             <button id = "currentWeather">CURRENT WEATHER</button>
             <input type="file" id="input" />
             <pre id='displayBox'></pre>
         </div>
-        <script type=module src='js/imports.js'></script>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/build/ol.js"></script>
+        <script type='module' src='js/imports.js'></script>
+        <script type='text/javascript' src='cordova.js'></script>
+        <script src='https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/build/ol.js'></script>
+        <!-- <script type='module' src='js/ol/Feature.js'></script>
+        <script type='module' src='js/ol/Geolocation.js'></script>
+        <script type='module' src='js/ol/View.js'></script>
+        <script type='module' src='js/ol/geom/Point.js'></script>
+        <script type='module' src='js/ol/layer/TileLayer.js'></script>
+        <script type='module' src='js/ol/layer/VectorLayer.js'></script>
+        <script type='module' src='js/ol/source/OSM.js'></script>
+        <script type='modlue' src='js/ol/source/VectorSource.js'></script>
+        <script type='module' src='js/ol/style/CircleStyle.js'></script>
+        <script type='module' src='js/ol/style/Fill.js'></script>
+        <script type='module' src='js/ol/style/Stroke.js'></script>
+        <script type='module' src='js/ol/style/Style.js'></script>-->
         <script type='text/javascript' src='js/main.js'></script>
-        <script type="text/javascript" src="js/index.js"></script>
+        <script type='text/javascript' src='js/index.js'></script> 
     </body>
 </html>
