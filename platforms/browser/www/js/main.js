@@ -1,6 +1,19 @@
+
 document.getElementById("getPosition").addEventListener("click", getPosition);
 document.getElementById("watchPosition").addEventListener("click", watchPosition);
 document.getElementById("currentWeather").addEventListener("click", currentWeather);
+function gettingJSON(){
+  var weatherLocation = document.getElementById('weatherLocation').value;
+  if (location === '') {
+        window.alert('Please enter a location.')
+    }
+    $.getJSON('https://api.openweathermap.org/data/2.5/weather?q=' + weatherLocation + '&appid=cfc6d5b9b5c3a52a649857702433e58b',function(json){
+        temp = JSON.stringify(json.main.temp);
+        window.alert('The current temperature is ' + (9 / 5 * (temp - 273.15) + 32).toFixed(2) + '°F');
+    }).fail(function(jqxhr, textStatus, error) {
+        window.alert('Please enter a different location.');
+    });
+};
 
 function getPosition() {
    var options = {
@@ -10,14 +23,95 @@ function getPosition() {
    var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
 
    function onSuccess(position) {
-      alert('Latitude: '          + position.coords.latitude          + '\n' +
-         'Longitude: '         + position.coords.longitude         + '\n' +
-         'Altitude: '          + position.coords.altitude          + '\n' +
-         'Accuracy: '          + position.coords.accuracy          + '\n' +
-         'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-         'Heading: '           + position.coords.heading           + '\n' +
-         'Speed: '             + position.coords.speed             + '\n' +
-         'Timestamp: '         + position.timestamp                + '\n');
+      // alert('Latitude: '       + position.coords.latitude          + '\n' +
+      //    'Longitude: '         + position.coords.longitude         + '\n' +
+      //    'Altitude: '          + position.coords.altitude          + '\n' +
+      //    'Accuracy: '          + position.coords.accuracy          + '\n' +
+      //    'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+      //    'Heading: '           + position.coords.heading           + '\n' +
+      //    'Speed: '             + position.coords.speed             + '\n' +
+      //    'Timestamp: '         + position.timestamp                + '\n');
+
+      // Begin map centering code
+
+        var platform = new H.service.Platform({
+          'apikey': 'Dg9tQuydT0tmOKcyIi2kiTERLFkSVXp7SJy1OQnsgCE'
+        });
+
+        var targetElement = document.getElementById('mapContainer');
+
+        // Obtain the default map types from the platform object:
+        var defaultLayers = platform.createDefaultLayers();
+
+        // Instantiate (and display) a map object:
+        var map = new H.Map(
+            document.getElementById('mapContainer'),
+            defaultLayers.vector.normal.map,
+            {
+              zoom: 10,
+              center: { lat: position.coords.latitude, lng: position.coords.longitude }
+            });
+
+        var svgMarkup = '<svg width="24" height="24" ' +
+    'xmlns="http://www.w3.org/2000/svg">' +
+    '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
+    'height="22" /><text x="12" y="18" font-size="12pt" ' +
+    'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
+    'fill="white"></text></svg>';
+
+        // Create an icon, an object holding the latitude and longitude, and a marker:
+        var icon = new H.map.Icon(svgMarkup),
+            coords = {lat: position.coords.latitude, lng: position.coords.longitude},
+            marker = new H.map.Marker(coords, {icon: icon});
+
+        // Add the marker to the map and center the map at the location of the marker:
+        map.addObject(marker);
+        map.setCenter(coords);
+
+        // Enable the event system on the map instance:
+        var mapEvents = new H.mapevents.MapEvents(map);
+
+        // Add event listener:
+        map.addEventListener('tap', function(evt) {
+            // Log 'tap' and 'mouse' events:
+            console.log(evt.type, evt.currentPointer.type); 
+        });
+
+        // Instantiate the default behavior, providing the mapEvents object:
+        var behavior = new H.mapevents.Behavior(mapEvents);
+
+        // Create the parameters for the reverse geocoding request:
+        var reverseGeocodingParameters = {
+              prox: '52.5309,13.3847,150',
+              mode: 'retrieveAddresses',
+              maxresults: 1
+            };
+
+        // Define a callback function to process the response:
+        function onSuccess(result) {
+          var location = result.Response.View[0].Result[0];
+
+        // Create an InfoBubble at the returned location with
+        // the address as its contents:
+        ui.addBubble(new H.ui.InfoBubble({
+            lat: location.Location.DisplayPosition.Latitude,
+            lng: location.Location.DisplayPosition.Longitude
+           }, { content: location.Location.Address.Label }));
+        };
+
+        // Get an instance of the geocoding service:
+        var geocoder = platform.getGeocodingService();
+
+        // Call the geocode method with the geocoding parameters,
+        // the callback and an error callback function (called if a
+        // communication error occurs):
+        geocoder.reverseGeocode(
+            reverseGeocodingParameters,
+            onSuccess,
+            function(e) { alert(e); });
+
+      // End map centering code
+      
    };
 
    function onError(error) {
@@ -49,7 +143,7 @@ function watchPosition() {
    }
 }
 
-function currentWeather() {
+function currentWeather(){
     if (navigator.geolocation) {
      navigator.geolocation.getCurrentPosition(function(position) {
         var x = position.coords.latitude;
@@ -74,7 +168,6 @@ function currentWeather() {
   })
 })}};
 
-// const selectedFile = document.getElementById('input').files[0];
 document.getElementById('input').addEventListener('change', function(){
   var reader = new FileReader();
   reader.onload = function(){
@@ -85,20 +178,20 @@ document.getElementById('input').addEventListener('change', function(){
 
 // Geolocation
 
-var view = new ol.View({
-  center: [0, 0],
-  zoom: 2
-});
+// var view = new ol.View({
+//   center: [0, 0],
+//   zoom: 2
+// });
 
-var map = new ol.Map({
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
-    })
-  ],
-  target: 'map',
-  view: view
-});
+// var map = new ol.Map({
+//   layers: [
+//     new ol.layer.Tile({
+//       source: new ol.source.OSM()
+//     })
+//   ],
+//   target: 'map',
+//   view: view
+// });
 
 var geolocation = new ol.Geolocation({
   // enableHighAccuracy must be set to true to have the heading value.
@@ -114,26 +207,6 @@ function el(id) {
 
 el('track').addEventListener('change', function() {
   geolocation.setTracking(this.checked);
-     var options = {
-      enableHighAccuracy: true,
-      maximumAge: 3600000
-   }
-   var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
-
-   function onSuccess(position) {
-      alert('Latitude: '          + position.coords.latitude          + '\n' +
-         'Longitude: '         + position.coords.longitude         + '\n' +
-         'Altitude: '          + position.coords.altitude          + '\n' +
-         'Accuracy: '          + position.coords.accuracy          + '\n' +
-         'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-         'Heading: '           + position.coords.heading           + '\n' +
-         'Speed: '             + position.coords.speed             + '\n' +
-         'Timestamp: '         + position.timestamp                + '\n');
-   };
-
-   function onError(error) {
-      alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
-   }
 });
 
 // update the HTML page when the position changes.

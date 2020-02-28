@@ -31,20 +31,33 @@
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
         <link rel="stylesheet" type="text/css" href="css/index.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/css/ol.css" type="text/css">
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/css/ol.css" type="text/css"> -->
+        <script src="../jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://api.mqcdn.com/sdk/place-search-js/v1.0.0/place-search.js"></script>
+        <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/place-search-js/v1.0.0/place-search.css"/>
         <title>Hello World</title>
     </head>
-    <body>
+     <body onload='getPosition()'> 
         <div class="app">
+            <!-- <div><img src='../img/logo.png'></div> <!-- 170px x 200px */ -->
             <h1>Apache Cordova</h1>
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received">Device is Ready</p>
             </div>
-            <div id='map' class='map'></div>
+            <!-- <div id='map' class='map'></div> -->
+            <form action='javascript:gettingJSON();'>
+                <input type='text' id='weatherLocation' value='' placeholder='Location'>
+                <button id='submitButton'>Submit</button>
+            </form>
+            <div id='mapContainer' style='width: 225px; height: 480px'></div>
             <label for="track">
-              track position
-              <input id="track" type="checkbox"/>
+              track altitude
+              <input id="track" type="checkbox" />
             </label>
             <p>
               position accuracy : <code id="accuracy"></code>&nbsp;&nbsp;
@@ -53,6 +66,7 @@
               heading : <code id="heading"></code>&nbsp;&nbsp;
               speed : <code id="speed"></code>
             </p>
+            <button id = "getPosition">CURRENT COORDINATES</button>
             <button id = "watchPosition">WATCH POSITION</button>
             <button id = "currentWeather">CURRENT WEATHER</button>
             <input type="file" id="input" />
@@ -72,7 +86,13 @@
         <script type='module' src='js/ol/style/Fill.js'></script>
         <script type='module' src='js/ol/style/Stroke.js'></script>
         <script type='module' src='js/ol/style/Style.js'></script>-->
-        <script type='text/javascript' src='js/main.js'></script>
         <script type='text/javascript' src='js/index.js'></script> 
+        <script type='text/javascript' src='js/main.js'></script>
     </body>
+        <script type="text/javascript">
+        placeSearch({
+            key: 'AqRJi7yyeGgubgwcCzHCy1eaj54bLA17',
+            collection: 'adminArea',
+            container: document.querySelector('#weatherLocation')
+    });</script>
 </html>
