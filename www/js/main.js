@@ -24,7 +24,7 @@ function getPosition() {
    }
 }
 
-function currentWeather() {
+function currentWeather(){
     if (navigator.geolocation) {
      navigator.geolocation.getCurrentPosition(function(position) {
         var x = position.coords.latitude;
