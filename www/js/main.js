@@ -1,18 +1,13 @@
 
-document.getElementById("getPosition").addEventListener("click", getPosition);
-document.getElementById("watchPosition").addEventListener("click", watchPosition);
+document.getElementById("currentPosition").addEventListener("click", currentPosition);
 document.getElementById("currentWeather").addEventListener("click", currentWeather);
 function gettingJSON(){
   var weatherLocation = document.getElementById('weatherLocation').value;
   if (location === '') {
         window.alert('Please enter a location.')
-    }
-    $.getJSON('https://api.openweathermap.org/data/2.5/weather?q=' + weatherLocation + '&appid=cfc6d5b9b5c3a52a649857702433e58b',function(json){
-        temp = JSON.stringify(json.main.temp);
-        window.alert('The current temperature is ' + (9 / 5 * (temp - 273.15) + 32).toFixed(2) + '°F');
-    }).fail(function(jqxhr, textStatus, error) {
-        window.alert('Please enter a different location.');
-    });
+  } else {
+      window.open('forecast.html?' + weatherLocation,'_self');
+  }
 };
 
 function getPosition() {
@@ -119,13 +114,13 @@ function getPosition() {
    }
 }
 
-function watchPosition() {
+function currentPosition() {
    var options = {
       maximumAge: 3600000,
       timeout: 3000,
       enableHighAccuracy: true,
    }
-   var watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+   var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
 
    function onSuccess(position) {
       alert('Latitude: '       + position.coords.latitude          + '\n' +
@@ -204,19 +199,6 @@ var geolocation = new ol.Geolocation({
 function el(id) {
   return document.getElementById(id);
 }
-
-el('track').addEventListener('change', function() {
-  geolocation.setTracking(this.checked);
-});
-
-// update the HTML page when the position changes.
-geolocation.on('change', function() {
-  el('accuracy').innerText = geolocation.getAccuracy() + ' [m]';
-  el('altitude').innerText = geolocation.getAltitude() + ' [m]';
-  el('altitudeAccuracy').innerText = geolocation.getAltitudeAccuracy() + ' [m]';
-  el('heading').innerText = geolocation.getHeading() + ' [rad]';
-  el('speed').innerText = geolocation.getSpeed() + ' [m/s]';
-});
 
 // handle geolocation error.
 geolocation.on('error', function(error) {

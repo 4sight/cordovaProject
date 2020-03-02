@@ -30,6 +30,7 @@
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' *;"> -->
         <link rel="stylesheet" type="text/css" href="css/index.css">
         <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/css/ol.css" type="text/css"> -->
         <script src="../jquery-3.4.1.min.js"></script>
@@ -55,19 +56,7 @@
                 <button id='submitButton'>Submit</button>
             </form>
             <div id='mapContainer' style='width: 225px; height: 480px'></div>
-            <label for="track">
-              track altitude
-              <input id="track" type="checkbox" />
-            </label>
-            <p>
-              position accuracy : <code id="accuracy"></code>&nbsp;&nbsp;
-              altitude : <code id="altitude"></code>&nbsp;&nbsp;
-              altitude accuracy : <code id="altitudeAccuracy"></code>&nbsp;&nbsp;
-              heading : <code id="heading"></code>&nbsp;&nbsp;
-              speed : <code id="speed"></code>
-            </p>
-            <button id = "getPosition">CURRENT COORDINATES</button>
-            <button id = "watchPosition">WATCH POSITION</button>
+            <button id = "currentPosition">CURRENT POSITION</button>
             <button id = "currentWeather">CURRENT WEATHER</button>
             <input type="file" id="input" />
             <pre id='displayBox'></pre>
@@ -85,7 +74,7 @@
         <script type='module' src='js/ol/style/CircleStyle.js'></script>
         <script type='module' src='js/ol/style/Fill.js'></script>
         <script type='module' src='js/ol/style/Stroke.js'></script>
-        <script type='module' src='js/ol/style/Style.js'></script>-->
+        <script type='module' src='js/ol/style/Style.js'></script> -->
         <script type='text/javascript' src='js/index.js'></script> 
         <script type='text/javascript' src='js/main.js'></script>
     </body>
