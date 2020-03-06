@@ -33,11 +33,16 @@ let placeLookup = new XMLHttpRequest();
 						celciusTemperaturesToday.push(historical.data[h].temperature);
 					}
 					$.getJSON('https://api.openweathermap.org/data/2.5/weather?q=' + place + '&appid=cfc6d5b9b5c3a52a649857702433e58b',function(json){
+					    console.log(json);
 					    rawTemp = JSON.stringify(json.main.temp);
+					    let conditions = JSON.stringify(json.weather[0].description);
 					    let currentTemp;
 					    currentTemp = ((9 / 5 * (rawTemp - 273.15) + 32).toFixed(2));
 					    console.log(currentTemp);
 					    document.getElementById('temp').textContent = 'Current temperature: ' + currentTemp + '°F';
+					    document.getElementById('conditions').textContent = 'Current conditions: ' + conditions.substring(1, conditions.length - 1);
+					    var image = "<img src='https://openweathermap.org/img/w/" + json.weather[0].icon + ".png'>";
+					    document.getElementById('weatherIcon').innerHTML = image;
 	      				console.log(celciusTemperaturesToday);
 						historicalTemperaturesToday = Array.from(celciusTemperaturesToday, x => (9 / 5 * x + 32).toFixed(2));
 						historicalTemperaturesToday.push(currentTemp);

@@ -44,7 +44,6 @@
     </head>
      <body onload='getPosition()'> 
         <div class="app">
-            <!-- <div><img src='../img/logo.png'></div> <!-- 170px x 200px */ -->
             <h1>Apache Cordova</h1>
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
@@ -58,6 +57,7 @@
             <div id='mapContainer' style='width: 225px; height: 480px'></div>
             <button id = "currentPosition">CURRENT POSITION</button>
             <button id = "currentWeather">CURRENT WEATHER</button>
+            <form action='/menus.html'><button id = 'menus'>SEE ANOTHER PAGE</button></form>
             <input type="file" id="input" />
             <pre id='displayBox'></pre>
         </div>
