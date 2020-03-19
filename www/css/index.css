@@ -285,3 +285,23 @@ h1 {
 li {
     list-style-type: none;
 }
+
+#stopwatch {
+    display: inline-block;
+    position: relative;
+    right: 10px;
+    top: 60px;
+    width: 30px;
+    height: 30px;
+    font-size: 26px;
+    padding: 5px;
+    margin: 5px;
+}
+
+#stopwatch a {
+    padding-right: 15px;
+}
+
+#stopwatch span {
+    display: block;
+}

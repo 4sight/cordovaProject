@@ -152,8 +152,35 @@ function currentWeather(){
           var temp = Math.round(data.main.temp);
           var weather = data.weather[0].description;
           var image = "<img src='https://openweathermap.org/img/w/" + data.weather[0].icon + ".png'>";
-          alert('Temperature: ' + temp + '\n' + 
-                'Weather: ' + weather);
+          fetch("https://api.sunrise-sunset.org/json?lat="+x+"&lng="+y+"&date=today").then(function(response) {
+            if (!response.ok) {
+              return response.json();
+            } else { 
+              return response.json().then(function(results) {
+              let parsed = JSON.parse(JSON.stringify(results));
+              let month = new Date().getMonth() + 1;
+              let date = new Date().getDate();
+              let year = new Date().getFullYear();
+              let fullDate = month + '/' + date + '/' + year;
+              let rawSunrise = parsed.results.sunrise;
+              let rawSunset = parsed.results.sunset;
+              let UTCsunrise = fullDate + ' ' + rawSunrise + ' UTC';
+              let UTCsunset = fullDate + ' ' + rawSunset + ' UTC';
+              let sunrise = new Date(UTCsunrise);
+              let sunset = new Date(UTCsunset);
+              console.log(sunrise);
+              console.log(sunset);
+              alert('Temperature: ' + temp + '\n' + 
+                    'Weather: ' + weather + '\n' +
+                    'Sunrise: ' + sunrise + '\n' +
+                    'Sunset: ' + sunset);
+            }).catch(function(err) {
+    alert('Fetch Error!', err);
+    }
+  )
+ 
+    }
+  })
       }).catch(function(err) {
     alert('Fetch Error!', err);
     }

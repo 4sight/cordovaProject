@@ -10,6 +10,42 @@ console.log(date);
 
 var placeSearch = place.substring(0, place.indexOf(','));
 console.log(placeSearch);
+
+let geocoding = new XMLHttpRequest();
+	geocoding.open('GET', 'http://www.mapquestapi.com/geocoding/v1/address?key=AqRJi7yyeGgubgwcCzHCy1eaj54bLA17&location=' + placeSearch);
+	geocoding.send();
+	geocoding.onload = () => {
+		if (geocoding.status === 200){
+			let response = JSON.parse(geocoding.response);
+			let lat = JSON.parse(JSON.stringify(response.results[0].locations[0].latLng.lat));
+			let lng = JSON.parse(JSON.stringify(response.results[0].locations[0].latLng.lng));
+			let sunData = new XMLHttpRequest();
+				sunData.open('GET', "https://api.sunrise-sunset.org/json?lat="+lat+"&lng="+lng+"&date=today");
+				sunData.send();
+				sunData.onload = () => {
+					if (sunData.status === 200){
+					  let data = JSON.parse(sunData.response);
+					  let month = new Date().getMonth() + 1;
+		              let date = new Date().getDate();
+		              let year = new Date().getFullYear();
+		              let fullDate = month + '/' + date + '/' + year;
+		              let rawSunrise = data.results.sunrise;
+		              let rawSunset = data.results.sunset;
+		              let UTCsunrise = fullDate + ' ' + rawSunrise + ' UTC';
+		              let UTCsunset = fullDate + ' ' + rawSunset + ' UTC';
+                      let sunrise = new Date(UTCsunrise);
+		              let sunset = new Date(UTCsunset);
+					  document.getElementById('sunrise').textContent = 'Sunrise - ' + sunrise;
+					  document.getElementById('sunset').textContent = 'Sunset - ' + sunset;
+					} else {
+						console.log(`error ${sunData.status} ${sunData.statusText}`);
+					}
+			}
+		} else {
+          console.log(`error ${geocoding.status} ${geocoding.statusText}`);
+        }
+	}
+
 let placeLookup = new XMLHttpRequest();
       placeLookup.open("GET", 'https://api.meteostat.net/v1/stations/search?q=' + placeSearch + '&key=bwA1ySha');
       placeLookup.send();
