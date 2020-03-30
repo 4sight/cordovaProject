@@ -35,8 +35,8 @@ let geocoding = new XMLHttpRequest();
 		              let UTCsunset = fullDate + ' ' + rawSunset + ' UTC';
                       let sunrise = new Date(UTCsunrise);
 		              let sunset = new Date(UTCsunset);
-					  document.getElementById('sunrise').textContent = 'Sunrise: ' + sunrise;
-					  document.getElementById('sunset').textContent = 'Sunset ' + sunset;
+					  document.getElementById('sunrise').textContent = 'Sunrise - ' + sunrise;
+					  document.getElementById('sunset').textContent = 'Sunset - ' + sunset;
 					} else {
 						console.log(`error ${sunData.status} ${sunData.statusText}`);
 					}
